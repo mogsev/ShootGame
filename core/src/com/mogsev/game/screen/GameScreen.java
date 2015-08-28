@@ -103,9 +103,9 @@ public class GameScreen implements Screen {
                 stage.draw();
                 break;
             case GAME_PAUSED:
-                this.stage.getBatch().begin();
+                //this.stage.getBatch().begin();
                 //this.pause();
-                this.stage.getBatch().end();
+                //this.stage.getBatch().end();
                 break;
             case GAME_RESUME:
 
@@ -130,7 +130,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resume() {
-        gameStatus = Status.GAME_RESUME;
+
     }
 
     @Override

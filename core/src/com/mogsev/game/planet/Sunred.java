@@ -20,7 +20,7 @@ public class Sunred extends Actor {
     public Sunred() {
         setSize(200, 200);
         setPosition(MathUtils.random(300, 400), MathUtils.random(300, 500));
-        addAction(Actions.moveTo(Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 200, 300));
+        addAction(Actions.moveTo(Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 200, 250));
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Sunred extends Actor {
         super.act(delta);
         if (!hasActions()) {
             int x = MathUtils.random(Gdx.graphics.getWidth());
-            int y = MathUtils.random(Gdx.graphics.getHeight());
+            int y = 300 + MathUtils.random(200);
             if (x < 100) {
                 x -= 200;
             }

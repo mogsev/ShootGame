@@ -22,7 +22,7 @@ public class Planet extends Actor {
     public Planet() {
         setSize(400, 400);
         setPosition(MathUtils.random(50), MathUtils.random(50));
-        addAction(Actions.moveTo(Gdx.graphics.getWidth() - 200, Gdx.graphics.getHeight() - 100, 200));
+        addAction(Actions.moveTo(300, 300, 150));
     }
 
     @Override
@@ -39,20 +39,19 @@ public class Planet extends Actor {
         super.act(delta);
         deltaTime += delta;
         if (!hasActions()) {
-            int x = MathUtils.random(Gdx.graphics.getWidth());
-            int y = MathUtils.random(Gdx.graphics.getHeight());
+            int x = MathUtils.random(350);
+            int y = MathUtils.random(300);
             if (x < 100) {
                 x -= 400;
             }
             if (y < 100) {
                 y -= 400;
             }
-            addAction(Actions.moveTo(x, y, MathUtils.random(100, 200)));
+            addAction(Actions.moveTo(x, y, MathUtils.random(100, 150)));
         }
         if (deltaTime > 4.0f) {
             this.getParent().addActor(new Enemy());
             deltaTime = 0;
         }
-
     }
 }

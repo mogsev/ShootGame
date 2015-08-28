@@ -19,7 +19,7 @@ public class Sunblue extends Actor {
 
     public Sunblue() {
         setSize(300, 300);
-        setPosition(MathUtils.random(50, 150), MathUtils.random(600, 800));
+        setPosition(MathUtils.random(50, 100), MathUtils.random(600, 800));
         addAction(Actions.moveTo(Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 200, 300));
     }
 
@@ -37,14 +37,14 @@ public class Sunblue extends Actor {
         super.act(delta);
         if (!hasActions()) {
             int x = MathUtils.random(Gdx.graphics.getWidth());
-            int y = MathUtils.random(Gdx.graphics.getHeight());
+            int y = 600 + MathUtils.random(400);
             if (x < 100) {
                 x -= 300;
             }
             if (y < 100) {
                 y -= 300;
             }
-            addAction(Actions.moveTo(x, y, MathUtils.random(200, 300)));
+            addAction(Actions.moveTo(x, y, MathUtils.random(100, 150)));
         }
     }
 }
