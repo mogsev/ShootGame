@@ -7,16 +7,26 @@ import com.mogsev.game.screen.GameScreen;
 public class MyGame extends Game {
 	private static final String TAG = "MyGame";
 	private SpriteBatch batch;
-	
+
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-        setScreen(new GameScreen(batch));
+		setScreen(new GameScreen(batch));
 	}
 
 	@Override
 	public void dispose() {
 		super.dispose();
 		batch.dispose();
+	}
+
+	@Override
+	public void pause() {
+		super.pause();
+	}
+
+	@Override
+	public void resume() {
+		super.resume();
 	}
 }

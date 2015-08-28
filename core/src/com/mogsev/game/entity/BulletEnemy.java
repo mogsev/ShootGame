@@ -7,40 +7,31 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import com.mogsev.game.util.LoadTexture;
 
-
 /**
- * Created by zhenya on 26.08.2015.
+ * Created by zhenya on 28.08.2015.
  */
-public class Bullet extends Actor {
-    private static final String TAG = "Bullet";
+public class BulletEnemy extends Actor {
+    private static final String TAG = "BulletEnemy";
     private static final float WIDTH = 3;
     private static final float HEIGHT = 9;
     private Texture texture = new Texture(Gdx.files.internal("bullet.png"));
-    //private TextureRegion region = new TextureRegion(texture, 0, 0, 2, 6);
-    public static Pool<Bullet> pool = Pools.get(Bullet.class);
+    private TextureRegion region = new TextureRegion(texture, 0, 0, 2, 6);
+    public static Pool<BulletEnemy> pool = Pools.get(BulletEnemy.class);
     private static int bulletCount;
 
-    public Bullet() {
+    public BulletEnemy() {
         bulletCount++;
         setSize(WIDTH, HEIGHT);
-        Gdx.app.log(TAG, "new BulLet " + bulletCount);
-    }
-
-    public Bullet(float x, float y, float posX, float posY) {
-        this();
-        Gdx.app.log(TAG, "new BulLet" + x + " " + y + " " + posX + " " + posY);
-        setPosition(posX, posY);
-        addAction(Actions.moveTo(x, Gdx.graphics.getHeight(), 3));
+        Gdx.app.log(TAG, "new BulLetEnemy " + bulletCount);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(texture, getX(), getY(), WIDTH, HEIGHT);
+        batch.draw(region, getX(), getY(), WIDTH, HEIGHT);
     }
 
     public Actor hit(float x, float y, boolean touchable) {
@@ -51,10 +42,12 @@ public class Bullet extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (!(getY() < Gdx.graphics.getHeight())) {
+        if (this.getY() < 0) {
             this.remove();
+            //this.getParent().removeActor(this);
             this.clearActions();
             pool.free(this);
+            //Gdx.app.log(TAG, "group count " + this.getParent().getChildren().size);
         }
     }
 
@@ -65,6 +58,5 @@ public class Bullet extends Actor {
     public int shot() {
         return 100;
     }
-
 
 }

@@ -3,7 +3,6 @@ package com.mogsev.game.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -14,44 +13,44 @@ import com.mogsev.game.util.LoadTexture;
 /**
  * Created by zhenya on 26.08.2015.
  */
-public class Player extends Actor {
+public class Player extends LifeActor {
     private static final String TAG = "Player";
-    private TextureRegion region = new TextureRegion(LoadTexture.PLAYER, 32, 0, 32, 32);
+    private final Texture texture = new Texture(Gdx.files.internal("player.png"));
+    private final TextureRegion region = new TextureRegion(texture, 32, 0, 32, 32);
+    //private TextureRegion life = new TextureRegion(LoadTexture.PLAYER, 38, 25, 1, 1);
 
     public Player() {
         Gdx.app.log(TAG, "new Player");
         setName("Player");
         setSize(64, 64);
-        setPosition(0, 0);
+        setPosition(Gdx.graphics.getWidth() / 2, 0);
 
-
-
-
-/**
         setTouchable(Touchable.enabled);
-
         addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log(TAG, "touchDown");
-                Gdx.app.log(TAG, Gdx.graphics.getHeight() + " " + Gdx.graphics.getWidth() + " " + getX());
-                if (getX() > Gdx.graphics.getWidth() - 64) {
-                    setX(0);
-                } else {
-                    setX(getX() + 10);
-                }
                 return true;
             }
-        });*/
+        });
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        //batch.setColor(getColor());
-        batch.draw(region, getX(), getY(), 64, 64);
+        batch.draw(region, getX(), getY(), getWidth(), getHeight());
+        //batch.draw(life, getX(), getY() + 65, 64, 3 );
     }
 
     public Actor hit(float x, float y, boolean touchable) {
+        if (touchable && getTouchable() != Touchable.enabled) return null;
         return x > 0 && x < getWidth() && y > 0 && y < getHeight() ? this : null;
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if (getX() > (Gdx.graphics.getWidth() - getWidth())) {
+            clearActions();
+        }
     }
 }
