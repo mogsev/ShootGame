@@ -14,12 +14,9 @@ public class Background extends Actor {
     private TextureRegion textureRegion;
     private Rectangle textureRegionBounds1;
     private Rectangle textureRegionBounds2;
-    //private float speed = 100;
     private float speed = 5;
-    private float deltaTime;
 
     public Background() {
-        //textureRegion = new TextureRegion(new Texture(Gdx.files.internal("background.png")), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         textureRegion = new TextureRegion(new Texture(Gdx.files.internal("background2.png")));
         textureRegionBounds1 = new Rectangle(0 - Gdx.graphics.getWidth() / 2, 0,
                 Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -60,6 +57,4 @@ public class Background extends Actor {
         textureRegionBounds2 = new Rectangle(Gdx.graphics.getWidth(), 0,
                 Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
-
-
 }

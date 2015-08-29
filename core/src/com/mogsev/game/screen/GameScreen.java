@@ -1,6 +1,7 @@
 package com.mogsev.game.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -31,7 +32,6 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  */
 public class GameScreen implements Screen {
     private static final String TAG = "GameScreen";
-    //private TextureRegion background = new TextureRegion(LoadTexture.PLANET, 500, 500);
     private Stage stage;
     private Player player;
     private Group group;
@@ -40,6 +40,9 @@ public class GameScreen implements Screen {
 
     public GameScreen(SpriteBatch batch) {
         gameStatus = Status.GAME_RUNNING;
+        Gdx.app.log(TAG, "Accelerometer is " + Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer));
+
+
 
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
         Gdx.input.setInputProcessor(stage);
@@ -129,6 +132,7 @@ public class GameScreen implements Screen {
         gameStatus = Status.GAME_PAUSED;
         BulletEnemy.pool.clear();
         Bullet.pool.clear();
+        Enemy.pool.obtain();
     }
 
     @Override
@@ -165,14 +169,17 @@ public class GameScreen implements Screen {
                     if (objB instanceof Enemy) {
                         Enemy enemy = (Enemy) objB;
                         if (bullet.getBound().overlaps(enemy.getBound())) {
-                            Gdx.app.log(TAG, "group count " + actors.size);
+                            //Gdx.app.log(TAG, "group count " + actors.size);
                             bullet.remove();
+                            bullet.clearActions();
+                            Bullet.pool.free(bullet);
                             enemy.changeLifeCount(bullet.shot(), LifeActor.Action.REDUCE);
-                            Gdx.app.log(TAG, " " + enemy.getLifeCount());
+                            //Gdx.app.log(TAG, " " + enemy.getLifeCount());
                             if (enemy.getLifeCount() <= 0) {
-                                enemy.remove();
+                                //enemy.remove();
+                                enemy.setActive(false);
                             }
-                            Gdx.app.log(TAG, "!-!");
+                            //Gdx.app.log(TAG, "!-!");
                         }
                     }
                 }

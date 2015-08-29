@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.mogsev.game.entity.Enemy;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
+
 /**
  * Created by zhenya on 29.08.2015.
  */
@@ -20,7 +22,7 @@ public class PlanetEarth extends Planet {
         setSize(400, 400);
         setLimitTime(4.0f, true);
         setLimitXY(Gdx.graphics.getWidth() - 200, 50.0f);
-        setDuration(15.0f, 30.0f);
+        setDuration(10.0f, 15.0f);
         setPosition(getRandomX(), getRandomY());
         addAction(Actions.moveTo(getRandomX(), getRandomY(), getRandomDuration()));
     }
@@ -41,13 +43,29 @@ public class PlanetEarth extends Planet {
         return x > 0 && x < getWidth() && y > 0 && y < getHeight() ? this : null;
     }
 
+    /**
+     * Checking create new Enemy object
+     * @param delta
+     */
     private void newEnemy(float delta) {
         if (isEnemy()) {
             deltaTime += delta;
             if (deltaTime > getLimitTime()) {
-                this.getParent().addActor(new Enemy());
+                this.getParent().addActor(createEnemy());
                 deltaTime = 0;
             }
         }
+    }
+
+    /**
+     * Create Enemy object
+     * @return
+     */
+    private Enemy createEnemy() {
+        Enemy enemy = Enemy.pool.obtain();
+        enemy.setActive(true);
+        enemy.setStartPosition();
+        enemy.setLifeCount(1000);
+        return enemy;
     }
 }

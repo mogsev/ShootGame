@@ -17,7 +17,7 @@ public class Sunred extends Planet {
         setTexture(new Texture(Gdx.files.internal("sun_red.png")));
         setSize(200, 200);
         setLimitXY(Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() / 3, Gdx.graphics.getHeight() - 350);
-        setDuration(15.0f, 30.0f);
+        setDuration(20.0f, 30.0f);
         setPosition(getRandomX(), getRandomY());
         addAction(Actions.moveTo(getRandomX(), getRandomY(), getRandomDuration()));
     }

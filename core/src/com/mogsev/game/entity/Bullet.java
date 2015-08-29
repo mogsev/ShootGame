@@ -24,10 +24,12 @@ public class Bullet extends Actor {
     //private TextureRegion region = new TextureRegion(texture, 0, 0, 2, 6);
     public static Pool<Bullet> pool = Pools.get(Bullet.class);
     private static int bulletCount;
+    private Rectangle rectangle;
 
     public Bullet() {
         bulletCount++;
         setSize(WIDTH, HEIGHT);
+        rectangle = new Rectangle(getX(), getY(), getWidth(), getHeight());
         Gdx.app.log(TAG, "new BulLet " + bulletCount);
     }
 
@@ -55,11 +57,14 @@ public class Bullet extends Actor {
             this.remove();
             this.clearActions();
             pool.free(this);
+            Gdx.app.log(TAG, "pool free");
         }
     }
 
     public Rectangle getBound() {
-        return new Rectangle(getX(), getY(), WIDTH, HEIGHT);
+        //return new Rectangle(getX(), getY(), WIDTH, HEIGHT);
+        rectangle.set(getX(), getY(), getWidth(), getHeight());
+        return rectangle;
     }
 
     public int shot() {

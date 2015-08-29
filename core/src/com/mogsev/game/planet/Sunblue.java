@@ -17,7 +17,7 @@ public class Sunblue extends Planet {
         setTexture(new Texture(Gdx.files.internal("sun_blue.png")));
         setSize(300, 300);
         setLimitXY(Gdx.graphics.getWidth() - 150, Gdx.graphics.getHeight() - 300.0f, Gdx.graphics.getHeight() - 150);
-        setDuration(15.0f, 30.0f);
+        setDuration(15.0f, 20.0f);
         setPosition(getRandomX(), getRandomY());
         addAction(Actions.moveTo(getRandomX(), getRandomY(), getRandomDuration()));
     }

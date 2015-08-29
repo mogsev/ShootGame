@@ -22,10 +22,12 @@ public class BulletEnemy extends Actor {
     private TextureRegion region = new TextureRegion(texture, 0, 0, 2, 6);
     public static Pool<BulletEnemy> pool = Pools.get(BulletEnemy.class);
     private static int bulletCount;
+    private Rectangle rectangle;
 
     public BulletEnemy() {
         bulletCount++;
         setSize(WIDTH, HEIGHT);
+        rectangle = new Rectangle(getX(), getY(), getWidth(), getHeight());
         Gdx.app.log(TAG, "new BulLetEnemy " + bulletCount);
     }
 
@@ -52,7 +54,9 @@ public class BulletEnemy extends Actor {
     }
 
     public Rectangle getBound() {
-        return new Rectangle(getX(), getY(), WIDTH, HEIGHT);
+        //return new Rectangle(getX(), getY(), WIDTH, HEIGHT);
+        rectangle.set(getX(), getY(), getWidth(), getHeight());
+        return rectangle;
     }
 
     public int shot() {

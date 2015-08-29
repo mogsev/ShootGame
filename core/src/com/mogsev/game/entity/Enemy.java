@@ -3,13 +3,11 @@ package com.mogsev.game.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.ReflectionPool;
-import com.mogsev.game.util.LoadTexture;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -24,14 +22,18 @@ public class Enemy extends LifeActor {
     private float deltaTime;
     private static final int WIDTH = 64;
     private static final int HEIGHT = 64;
+    private boolean active;
+    private Rectangle rectangle;
 
     public Enemy() {
         enemyCount++;
         Gdx.app.log(TAG, "new Enemy " + enemyCount);
         setSize(WIDTH, HEIGHT);
-        setPosition(getRandomWidth(), Gdx.graphics.getHeight());
+        setStartPosition();
         addAction(Actions.moveTo(getRandomWidth(), getRandomHeight(), 15));
         setLifeCount(1000);
+        rectangle = new Rectangle(getX(), getY(), getWidth(), getHeight());
+        setActive(true);
     }
 
     @Override
@@ -40,22 +42,29 @@ public class Enemy extends LifeActor {
     }
 
     public Rectangle getBound() {
-        return new Rectangle(getX(), getY(), getWidth(), getHeight());
+        //return new Rectangle(getX(), getY(), getWidth(), getHeight());
+        //Rectangle rectangle = new Rectangle(getX(), getY(), getWidth(), getHeight());
+        rectangle.set(getX(), getY(), getWidth(), getHeight());
+        return rectangle;
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (!hasActions()) {
-            //int x = MathUtils.random(100, Gdx.graphics.getWidth() - WIDTH);
-            //int y = MathUtils.random(100, Gdx.graphics.getHeight() - HEIGHT);
-            addAction(Actions.moveTo(getRandomWidth(), getRandomHeight(), 15));
-        }
-        deltaTime += delta;
-        if (deltaTime > 1.5f) {
-            this.getParent().addActor(fire(getX() + 32, getY() + 32));
-            Gdx.app.log(TAG, " " + deltaTime);
-            deltaTime = 0;
+        if (active) {
+            if (!hasActions()) {
+                addAction(Actions.moveTo(getRandomWidth(), getRandomHeight(), 15));
+            }
+            deltaTime += delta;
+            if (deltaTime > 1.5f) {
+                this.getParent().addActor(fire(getX() + 32, getY() + 32));
+                //Gdx.app.log(TAG, " " + deltaTime);
+                deltaTime = 0;
+            }
+        } else {
+            this.remove();
+            this.clearActions();
+            Enemy.pool.free(this);
         }
     }
 
@@ -90,5 +99,20 @@ public class Enemy extends LifeActor {
      */
     private int getRandomHeight() {
         return MathUtils.random(Gdx.graphics.getHeight() / 4, Gdx.graphics.getHeight() - HEIGHT);
+    }
+
+    /**
+     * Set active
+     * @param active
+     */
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    /**
+     * Set start position
+     */
+    public void setStartPosition() {
+        setPosition(getRandomWidth(), Gdx.graphics.getHeight());
     }
 }

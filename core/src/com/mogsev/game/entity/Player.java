@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.mogsev.game.util.LoadTexture;
 
 /**
@@ -51,6 +52,18 @@ public class Player extends LifeActor {
         super.act(delta);
         if (getX() > (Gdx.graphics.getWidth() - getWidth())) {
             clearActions();
+        }
+        accelerometer();
+    }
+
+    private void accelerometer() {
+        if (Gdx.input.getRotation() > 0 && Gdx.input.getRotation() < 90) {
+            this.clearActions();
+            this.addAction(Actions.moveTo(Gdx.graphics.getWidth(), 0, 2));
+        }
+        if (Gdx.input.getRotation() > 270 && Gdx.input.getRotation() < 360) {
+            this.clearActions();
+            this.addAction(Actions.moveTo(0, 0, 2));
         }
     }
 }
