@@ -1,45 +1,27 @@
 package com.mogsev.game.planet;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.mogsev.game.entity.Enemy;
 
 /**
  * Created by zhenya on 28.08.2015.
  */
 public class Planet extends Actor {
     private static final String TAG = "Planet";
-    private final Texture texture = new Texture(Gdx.files.internal("planet.png"));
-    private float deltaTime;
-    private float limitX;
-    private float limitY;
+    private Texture texture;
+    private float limitMinX;
+    private float limitMaxX;
+    private float limitMinY;
+    private float limitMaxY;
     private float minDuration;
     private float maxDuration;
     private float limitTime;
-    private boolean isEnemy;
+    private boolean isEnemy = false;
 
     public Planet() {
-        setSize(400, 400);
-        setLimitTime(4.0f, true);
-        setLimitXY(Gdx.graphics.getWidth() - 200, 400.0f);
-        setDuration(15.0f, 30.0f);
-        setPosition(getRandomX(), getRandomY());
-        addAction(Actions.moveTo(getRandomX(), getRandomY(), getRandomDuration()));
-    }
-
-    private void setLimitXY(float limitX, float limitY) {
-        this.limitX = limitX;
-        this.limitY = limitY;
-    }
-
-    private void setDuration(float minDuration, float maxDuration) {
-        this.minDuration = minDuration;
-        this.maxDuration = maxDuration;
     }
 
     @Override
@@ -51,44 +33,66 @@ public class Planet extends Actor {
     public void act(float delta) {
         super.act(delta);
         newAction();
-        newEnemy(delta);
     }
 
-    public Actor hit(float x, float y, boolean touchable) {
-        if (touchable && getTouchable() != Touchable.enabled) return null;
-        return x > 0 && x < getWidth() && y > 0 && y < getHeight() ? this : null;
-    }
-
-    private void newAction() {
+    protected void newAction() {
         if (!hasActions()) {
             addAction(Actions.moveTo(getRandomX(), getRandomY(), getRandomDuration()));
         }
     }
 
-    private void newEnemy(float delta) {
-        if (isEnemy) {
-            deltaTime += delta;
-            if (deltaTime > limitTime) {
-                this.getParent().addActor(new Enemy());
-                deltaTime = 0;
-            }
-        }
+    protected float getRandomX() {
+        return MathUtils.random(limitMinX, limitMaxX);
     }
 
-    private float getRandomX() {
-        return MathUtils.random(limitX);
+    protected float getRandomY() {
+        return MathUtils.random(limitMinY, limitMaxY);
     }
 
-    private float getRandomY() {
-        return MathUtils.random(limitY) - getHeight();
-    }
-
-    private float getRandomDuration() {
+    protected float getRandomDuration() {
         return MathUtils.random(minDuration, maxDuration);
     }
 
-    public void setLimitTime(float limitTime, boolean isEnemy) {
+    protected void setLimitTime(float limitTime, boolean isEnemy) {
         this.limitTime = limitTime;
         this.isEnemy = isEnemy;
+    }
+
+    protected void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
+    protected void setLimitXY(float limitMaxX, float limitMaxY) {
+        this.limitMinX = 0;
+        this.limitMaxX = limitMaxX;
+        this.limitMinY = 0;
+        this.limitMaxY = limitMaxY;
+    }
+
+    protected void setLimitXY(float limitMaxX, float limitMinY, float limitMaxY) {
+        this.limitMinX = 0;
+        this.limitMaxX = limitMaxX;
+        this.limitMinY = limitMinY;
+        this.limitMaxY = limitMaxY;
+    }
+
+    protected void setLimitXY(float limitMinX, float limitMaxX, float limitMinY, float limitMaxY) {
+        this.limitMinX = limitMinX;
+        this.limitMaxX = limitMaxX;
+        this.limitMinY = limitMinY;
+        this.limitMaxY = limitMaxY;
+    }
+
+    protected void setDuration(float minDuration, float maxDuration) {
+        this.minDuration = minDuration;
+        this.maxDuration = maxDuration;
+    }
+
+    protected float getLimitTime() {
+        return limitTime;
+    }
+
+    protected boolean isEnemy() {
+        return isEnemy;
     }
 }

@@ -80,7 +80,7 @@ public class Enemy extends LifeActor {
      * @return
      */
     private int getRandomWidth() {
-        return MathUtils.random(100, Gdx.graphics.getWidth() - WIDTH);
+        return MathUtils.random(0, Gdx.graphics.getWidth() - WIDTH);
     }
 
     /**
@@ -89,6 +89,6 @@ public class Enemy extends LifeActor {
      * @return
      */
     private int getRandomHeight() {
-        return MathUtils.random(100, Gdx.graphics.getHeight() - HEIGHT);
+        return MathUtils.random(Gdx.graphics.getHeight() / 4, Gdx.graphics.getHeight() - HEIGHT);
     }
 }

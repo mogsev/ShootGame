@@ -2,9 +2,10 @@ package com.mogsev.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -16,13 +17,12 @@ import com.mogsev.game.entity.Bullet;
 import com.mogsev.game.entity.BulletEnemy;
 import com.mogsev.game.entity.Enemy;
 import com.mogsev.game.entity.LifeActor;
-import com.mogsev.game.planet.Planet;
 import com.mogsev.game.entity.Player;
+import com.mogsev.game.planet.Background;
+import com.mogsev.game.planet.PlanetEarth;
 import com.mogsev.game.planet.Sunblue;
 import com.mogsev.game.planet.Sunred;
 import com.mogsev.game.util.GameStatus.Status;
-
-import com.mogsev.game.util.LoadTexture;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -36,6 +36,7 @@ public class GameScreen implements Screen {
     private Player player;
     private Group group;
     private Status gameStatus;
+    private BitmapFont font = new BitmapFont();
 
     public GameScreen(SpriteBatch batch) {
         gameStatus = Status.GAME_RUNNING;
@@ -47,9 +48,10 @@ public class GameScreen implements Screen {
 
         player = new Player();
 
+        group.addActor(new Background());
         group.addActor(new Sunred());
         group.addActor(new Sunblue());
-        group.addActor(new Planet());
+        group.addActor(new PlanetEarth());
 
         group.addActor(player);
 
@@ -86,21 +88,22 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
+        font.setColor(Color.WHITE);
     }
 
     @Override
     public void render(float delta) {
         switch (gameStatus) {
             case GAME_RUNNING:
-                Gdx.gl.glClearColor(1, 1, 1, 1);
+                Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-                checkCollisions();
+                checkCollisions(); // Check collision
                 //stage.getBatch().begin();
                 //stage.getBatch().draw(background, 500, 500);
                 //stage.getBatch().end();
                 stage.act(delta);
                 stage.draw();
+                showFps(stage); // Show FPS
                 break;
             case GAME_PAUSED:
                 //this.stage.getBatch().begin();
@@ -175,5 +178,11 @@ public class GameScreen implements Screen {
                 }
             }
         }
+    }
+
+    private void showFps(Stage stage) {
+        stage.getBatch().begin();
+        font.draw(stage.getBatch(), "Fps: " + Gdx.graphics.getFramesPerSecond(), 0, 15);
+        stage.getBatch().end();
     }
 }
