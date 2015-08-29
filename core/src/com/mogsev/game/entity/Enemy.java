@@ -16,7 +16,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  */
 public class Enemy extends LifeActor {
     private static final String TAG = "Enemy";
-    private final Texture texture = new Texture(Gdx.files.internal("enemy.png"));
+    private Texture texture = new Texture(Gdx.files.internal("enemy.png"));
     private static int enemyCount;
     public static Pool<Enemy> pool = new ReflectionPool<Enemy>(Enemy.class);
     private float deltaTime;
@@ -41,9 +41,11 @@ public class Enemy extends LifeActor {
         batch.draw(texture, getX(), getY(), getWidth(), getHeight());
     }
 
+    /**
+     * Return bounds of the object
+     * @return
+     */
     public Rectangle getBound() {
-        //return new Rectangle(getX(), getY(), getWidth(), getHeight());
-        //Rectangle rectangle = new Rectangle(getX(), getY(), getWidth(), getHeight());
         rectangle.set(getX(), getY(), getWidth(), getHeight());
         return rectangle;
     }

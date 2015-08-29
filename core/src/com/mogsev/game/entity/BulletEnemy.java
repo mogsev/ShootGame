@@ -6,10 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
-import com.mogsev.game.util.LoadTexture;
 
 /**
  * Created by zhenya on 28.08.2015.
@@ -36,11 +34,6 @@ public class BulletEnemy extends Actor {
         batch.draw(region, getX(), getY(), WIDTH, HEIGHT);
     }
 
-    public Actor hit(float x, float y, boolean touchable) {
-        if (touchable && getTouchable() != Touchable.enabled) return null;
-        return x > 0 && x < getWidth() && y > 0 && y < getHeight() ? this : null;
-    }
-
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -53,6 +46,10 @@ public class BulletEnemy extends Actor {
         }
     }
 
+    /**
+     * Return bounds of the object
+     * @return
+     */
     public Rectangle getBound() {
         //return new Rectangle(getX(), getY(), WIDTH, HEIGHT);
         rectangle.set(getX(), getY(), getWidth(), getHeight());

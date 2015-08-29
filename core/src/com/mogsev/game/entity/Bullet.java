@@ -3,14 +3,11 @@ package com.mogsev.game.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
-import com.mogsev.game.util.LoadTexture;
 
 
 /**
@@ -33,6 +30,7 @@ public class Bullet extends Actor {
         Gdx.app.log(TAG, "new BulLet " + bulletCount);
     }
 
+    @Deprecated
     public Bullet(float x, float y, float posX, float posY) {
         this();
         Gdx.app.log(TAG, "new BulLet" + x + " " + y + " " + posX + " " + posY);
@@ -43,11 +41,6 @@ public class Bullet extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(texture, getX(), getY(), WIDTH, HEIGHT);
-    }
-
-    public Actor hit(float x, float y, boolean touchable) {
-        if (touchable && getTouchable() != Touchable.enabled) return null;
-        return x > 0 && x < getWidth() && y > 0 && y < getHeight() ? this : null;
     }
 
     @Override
@@ -61,6 +54,10 @@ public class Bullet extends Actor {
         }
     }
 
+    /**
+     * Return bounds of the object
+     * @return
+     */
     public Rectangle getBound() {
         //return new Rectangle(getX(), getY(), WIDTH, HEIGHT);
         rectangle.set(getX(), getY(), getWidth(), getHeight());
@@ -70,6 +67,7 @@ public class Bullet extends Actor {
     public int shot() {
         return 100;
     }
+
 
 
 }

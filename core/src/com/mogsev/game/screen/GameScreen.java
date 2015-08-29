@@ -2,11 +2,16 @@ package com.mogsev.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Peripheral;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -18,11 +23,13 @@ import com.mogsev.game.entity.Bullet;
 import com.mogsev.game.entity.BulletEnemy;
 import com.mogsev.game.entity.Enemy;
 import com.mogsev.game.entity.LifeActor;
+import com.mogsev.game.entity.Missile;
 import com.mogsev.game.entity.Player;
 import com.mogsev.game.planet.Background;
 import com.mogsev.game.planet.PlanetEarth;
 import com.mogsev.game.planet.Sunblue;
 import com.mogsev.game.planet.Sunred;
+import com.mogsev.game.util.GameGestureListener;
 import com.mogsev.game.util.GameStatus.Status;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -30,7 +37,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 /**
  * Created by zhenya on 26.08.2015.
  */
-public class GameScreen implements Screen {
+public class GameScreen implements Screen{
     private static final String TAG = "GameScreen";
     private Stage stage;
     private Player player;
@@ -41,11 +48,9 @@ public class GameScreen implements Screen {
     public GameScreen(SpriteBatch batch) {
         gameStatus = Status.GAME_RUNNING;
         Gdx.app.log(TAG, "Accelerometer is " + Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer));
-
-
-
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
-        Gdx.input.setInputProcessor(stage);
+        //Gdx.input.setInputProcessor(stage);
+
 
         group = new Group();
 
@@ -57,9 +62,11 @@ public class GameScreen implements Screen {
         group.addActor(new PlanetEarth());
 
         group.addActor(player);
+        //group.addActor(new Missile());
 
 
         group.addActor(new Enemy());
+
 
         stage.addListener(new InputListener() {
 
@@ -81,17 +88,27 @@ public class GameScreen implements Screen {
                         }
                     }
                 } else {
-                    group.addActor(fire(x, y, player.getX() + 32, player.getY() + 32));
+                    group.addActor(fireBullet(x, y, player.getX() + 32, player.getY() + 32));
                 }
                 return true;
             }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                super.touchUp(event, x, y, pointer, button);
+            }
         });
+
         stage.addActor(group);
     }
 
     @Override
     public void show() {
         font.setColor(Color.WHITE);
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(new GestureDetector(new GameGestureListener(this)));
+        multiplexer.addProcessor(stage);
+        Gdx.input.setInputProcessor(multiplexer);
     }
 
     @Override
@@ -142,21 +159,16 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
     public void dispose() {
-        //stage.dispose();
+        stage.dispose();
+        font.dispose();
     }
 
-    private Bullet fire(float x, float y, float posX, float posY) {
-        Bullet bullet = Bullet.pool.obtain();
-        bullet.setPosition(posX, posY);
-        bullet.addAction(moveTo(x, Gdx.graphics.getHeight(), 3));
-        //removeActor(bullet);
-        return bullet;
-    }
+
 
     private void checkCollisions() {
         SnapshotArray actors = group.getChildren();
@@ -191,5 +203,21 @@ public class GameScreen implements Screen {
         stage.getBatch().begin();
         font.draw(stage.getBatch(), "Fps: " + Gdx.graphics.getFramesPerSecond(), 0, 15);
         stage.getBatch().end();
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    private Bullet fireBullet(float x, float y, float posX, float posY) {
+        Bullet bullet = Bullet.pool.obtain();
+        bullet.setPosition(posX, posY);
+        bullet.addAction(moveTo(x, Gdx.graphics.getHeight(), 3));
+        //removeActor(bullet);
+        return bullet;
     }
 }
