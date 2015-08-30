@@ -51,25 +51,19 @@ public class GameScreen implements Screen{
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
         //Gdx.input.setInputProcessor(stage);
 
-
         group = new Group();
-
         player = new Player();
 
         group.addActor(new Background());
         group.addActor(new Sunred());
         group.addActor(new Sunblue());
         group.addActor(new PlanetEarth());
-
         group.addActor(player);
         //group.addActor(new Missile());
 
-
-        group.addActor(new Enemy());
-
+        //group.addActor(new Enemy());
 
         stage.addListener(new InputListener() {
-
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (y < player.getHeight()) {
@@ -98,17 +92,26 @@ public class GameScreen implements Screen{
                 super.touchUp(event, x, y, pointer, button);
             }
         });
-
         stage.addActor(group);
     }
 
     @Override
     public void show() {
         font.setColor(Color.WHITE);
+        switch (Gdx.app.getType()) {
+            case Android:
+                Gdx.input.setInputProcessor(new GestureDetector(new GameGestureListener(this)));
+                break;
+            case Desktop:
+                Gdx.input.setInputProcessor(stage);
+                break;
+        }
+        /**
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(new GestureDetector(new GameGestureListener(this)));
         multiplexer.addProcessor(stage);
         Gdx.input.setInputProcessor(multiplexer);
+         */
     }
 
     @Override
@@ -167,8 +170,6 @@ public class GameScreen implements Screen{
         stage.dispose();
         font.dispose();
     }
-
-
 
     private void checkCollisions() {
         SnapshotArray actors = group.getChildren();

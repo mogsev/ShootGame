@@ -67,8 +67,9 @@ public class GameGestureListener implements GestureListener {
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        Gdx.app.log(TAG, "fling");
-        group.addActor(fireMissile(velocityX, velocityY, player.getX() + 32, player.getY() + 32));
+        Gdx.app.log(TAG, "fling: " + "velX: " + velocityX + " velY: " + velocityY + " button: " + button);
+        //group.addActor(fireMissile(velocityX, velocityY, player.getX() + 32, player.getY() + 32));
+
         return true;
     }
 

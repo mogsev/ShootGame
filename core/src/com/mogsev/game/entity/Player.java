@@ -14,8 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
  */
 public class Player extends LifeActor {
     private static final String TAG = "Player";
-    private final Texture texture = new Texture(Gdx.files.internal("player.png"));
-    private final TextureRegion region = new TextureRegion(texture, 32, 0, 32, 32);
+    private final Texture texture = new Texture(Gdx.files.internal("human_ship/fighter.png"));
+    //private final TextureRegion region = new TextureRegion(texture, 32, 0, 32, 32);
     private Rectangle rectangle;
 
 
@@ -38,7 +38,8 @@ public class Player extends LifeActor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(region, getX(), getY(), getWidth(), getHeight());
+        //batch.draw(region, getX(), getY(), getWidth(), getHeight());
+        batch.draw(texture, getX(), getY(), getWidth(), getHeight());
         //batch.draw(life, getX(), getY() + 65, 64, 3 );
     }
 

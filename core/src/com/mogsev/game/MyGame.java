@@ -17,7 +17,6 @@ public class MyGame extends Game {
 	@Override
 	public void dispose() {
 		super.dispose();
-		batch.dispose();
 	}
 
 	@Override
