@@ -17,11 +17,11 @@ public class Bullet extends Actor {
     private static final String TAG = "Bullet";
     private static final float WIDTH = 3;
     private static final float HEIGHT = 9;
-    private Texture texture = new Texture(Gdx.files.internal("bullet.png"));
+    private final Texture texture = new Texture(Gdx.files.internal("bullet.png"));
     //private TextureRegion region = new TextureRegion(texture, 0, 0, 2, 6);
     public static Pool<Bullet> pool = Pools.get(Bullet.class);
     private static int bulletCount;
-    private Rectangle rectangle;
+    private final Rectangle rectangle;
 
     public Bullet() {
         bulletCount++;

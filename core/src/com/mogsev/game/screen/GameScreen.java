@@ -97,6 +97,7 @@ public class GameScreen implements Screen{
 
     @Override
     public void show() {
+        Gdx.app.log(TAG, "show");
         font.setColor(Color.WHITE);
         switch (Gdx.app.getType()) {
             case Android:
@@ -144,29 +145,33 @@ public class GameScreen implements Screen{
 
     @Override
     public void resize(int width, int height) {
+        Gdx.app.log(TAG, "resize");
         stage.getViewport().update(width, height, true);
     }
 
     @Override
     public void pause() {
-        gameStatus = Status.GAME_PAUSED;
-        BulletEnemy.pool.clear();
-        Bullet.pool.clear();
-        Enemy.pool.obtain();
+        Gdx.app.log(TAG, "pause");
+        clearPools();
+        //gameStatus = Status.GAME_PAUSED;
+
     }
 
     @Override
     public void resume() {
-
+        Gdx.app.log(TAG, "resume");
+        clearPools();
     }
 
     @Override
     public void hide() {
+        Gdx.app.log(TAG, "hide");
         Gdx.input.setInputProcessor(null);
     }
 
     @Override
     public void dispose() {
+        Gdx.app.log(TAG, "dispose");
         stage.dispose();
         font.dispose();
     }
@@ -218,7 +223,15 @@ public class GameScreen implements Screen{
         Bullet bullet = Bullet.pool.obtain();
         bullet.setPosition(posX, posY);
         bullet.addAction(moveTo(x, Gdx.graphics.getHeight(), 3));
-        //removeActor(bullet);
         return bullet;
+    }
+
+    /**
+     * Clear pools of entity
+     */
+    private void clearPools() {
+        BulletEnemy.pool.clear();
+        Bullet.pool.clear();
+        Enemy.pool.obtain();
     }
 }

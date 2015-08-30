@@ -14,8 +14,8 @@ import com.badlogic.gdx.utils.Pools;
  */
 public class Missile extends Actor {
     private static final String TAG = "Missile";
-    private Texture texture = new Texture(Gdx.files.internal("missile.png"));
-    private TextureRegion region = new TextureRegion(texture, 4, 3, 14, 45);
+    private final Texture texture = new Texture(Gdx.files.internal("missile.png"));
+    private final TextureRegion region = new TextureRegion(texture, 4, 3, 14, 45);
     public static Pool<Missile> pool = Pools.get(Missile.class);
     private static int count;
     private Rectangle rectangle;

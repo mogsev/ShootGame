@@ -16,12 +16,12 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  */
 public class Enemy extends LifeActor {
     private static final String TAG = "Enemy";
-    private Texture texture = new Texture(Gdx.files.internal("enemy.png"));
+    private final Texture texture = new Texture(Gdx.files.internal("enemy.png"));
     private static int enemyCount;
     public static Pool<Enemy> pool = new ReflectionPool<Enemy>(Enemy.class);
     private float deltaTime;
-    private static final int WIDTH = 64;
-    private static final int HEIGHT = 64;
+    private final int WIDTH = 64;
+    private final int HEIGHT = 64;
     private boolean active;
     private Rectangle rectangle;
 

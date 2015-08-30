@@ -16,11 +16,11 @@ public class BulletEnemy extends Actor {
     private static final String TAG = "BulletEnemy";
     private static final float WIDTH = 3;
     private static final float HEIGHT = 9;
-    private Texture texture = new Texture(Gdx.files.internal("bullet.png"));
-    private TextureRegion region = new TextureRegion(texture, 0, 0, 2, 6);
+    private final Texture texture = new Texture(Gdx.files.internal("bullet.png"));
+    private final TextureRegion region = new TextureRegion(texture, 0, 0, 2, 6);
     public static Pool<BulletEnemy> pool = Pools.get(BulletEnemy.class);
     private static int bulletCount;
-    private Rectangle rectangle;
+    private final Rectangle rectangle;
 
     public BulletEnemy() {
         bulletCount++;
